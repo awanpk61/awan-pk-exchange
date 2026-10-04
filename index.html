@@ -20,7 +20,7 @@ function tickDemo(){for(const a of Object.values(assets)){if(!a.live){let move=(
 function trade(side){const k=$('coinSelect').value,amount=Number($('amount').value),a=assets[k];if(!Number.isFinite(amount)||amount<=0){$('tradeMsg').textContent='براہِ کرم درست مقدار لکھیں۔';return}const cost=amount*a.price;if(side==='BUY'){if(cost>cash){$('tradeMsg').textContent='ڈیمو USDT بیلنس کافی نہیں۔';return}cash-=cost;holdings[k]+=amount}else{if(amount>holdings[k]){$('tradeMsg').textContent='والیٹ میں اتنی مقدار موجود نہیں۔';return}holdings[k]-=amount;cash+=cost}trades.push({time:new Date().toLocaleTimeString(),side,coin:k,amount,price:a.price});saveWallet();$('tradeMsg').textContent=`ڈیمو ${side==='BUY'?'خرید':'فروخت'} مکمل: ${fmt(amount)} ${k}، قیمت ${money(a.price)}۔`;renderWallet();renderHistory()}
 $('buy').addEventListener('click',()=>trade('BUY'));$('sell').addEventListener('click',()=>trade('SELL'));$('coinSelect').addEventListener('change',drawChart);window.addEventListener('resize',drawChart);async function refresh(){await fetchLive();tickDemo();renderMarket();renderWallet();drawChart()}for(const a of Object.values(assets))a.history.push(a.price);renderMarket();renderWallet();renderHistory();drawChart();refresh();setInterval(refresh,10000);
 if ('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {})); }
-function saveWallet(){
+function saveWallet();{
   localStorage.setItem('awan_cash',cash);
   localStorage.setItem('awan_holdings',JSON.stringify(holdings));
   localStorage.setItem('awan_trades',JSON.stringify(trades));
