@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="ur"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#101a2b"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" type="image/png" sizes="192x192" href="icon-192.png"><title>AWAN PK Exchange</title>
 <style>
@@ -17,19 +18,7 @@ function renderHistory(){$('history').innerHTML=trades.slice().reverse().slice(0
 function drawChart(){const c=$('chart'),ctx=c.getContext('2d'),key=$('coinSelect').value,a=assets[key],dpr=window.devicePixelRatio||1,w=c.clientWidth||600,h=220;c.width=w*dpr;c.height=h*dpr;ctx.scale(dpr,dpr);ctx.clearRect(0,0,w,h);ctx.strokeStyle='#263650';ctx.lineWidth=1;for(let i=1;i<5;i++){let y=h*i/5;ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke()}let vals=a.history.slice(-60);if(vals.length<2)vals=Array(12).fill(a.price);let min=Math.min(...vals),max=Math.max(...vals);if(max===min){max+=Math.abs(max*.001)||1;min-=Math.abs(min*.001)||1}ctx.strokeStyle='#69a7ff';ctx.lineWidth=2;ctx.beginPath();vals.forEach((v,i)=>{let x=i*(w-12)/(vals.length-1)+6,y=h-12-(v-min)/(max-min)*(h-24);if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y)});ctx.stroke();$('chartLabel').textContent=key+'/USDT — '+money(a.price)}
 async function fetchLive(){let liveCount=0;for(const k of ['BTC','ETH','DOGE']){const a=assets[k];try{const r=await fetch('https://api.binance.com/api/v3/ticker/24hr?symbol='+a.symbol,{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);const j=await r.json(),p=Number(j.lastPrice),chg=Number(j.priceChangePercent);if(!Number.isFinite(p)||p<=0)throw Error('invalid price');a.price=p;a.change=Number.isFinite(chg)?chg:0;a.live=true;liveCount++}catch(e){a.live=false}}assets.XAUT.live=false;$('status').textContent=liveCount===3?'BTC، ETH اور DOGE کی عوامی قیمتیں تازہ ہیں۔ XAUT ڈیمو ہے۔ خرید و فروخت فرضی ہے۔':`لائیو ڈیٹا ابھی مکمل نہیں ملا (${liveCount}/3 کوائن)۔ انٹرنیٹ/API کی وجہ سے ڈیمو قیمت بھی دکھ سکتی ہے۔ XAUT ڈیمو ہے۔`}
 function tickDemo(){for(const a of Object.values(assets)){if(!a.live){let move=(Math.random()-.5)*.006;a.price=Math.max(a.price*(1+move),.000001);a.change+=move*100}a.history.push(a.price);if(a.history.length>100)a.history.shift()}}
-function trade(side){const k=$('coinSelect').value,amount=Number($('amount').value),a=assets[k];if(!Number.isFinite(amount)||amount<=0){$('tradeMsg').textContent='براہِ کرم درست مقدار لکھیں۔';return}const cost=amount*a.price;if(side==='BUY'){if(cost>cash){$('tradeMsg').textContent='ڈیمو USDT بیلنس کافی نہیں۔';return}cash-=cost;holdings[k]+=amount}else{if(amount>holdings[k]){$('tradeMsg').textContent='والیٹ میں اتنی مقدار موجود نہیں۔';return}holdings[k]-=amount;cash+=cost}trades.push({time:new Date().toLocaleTimeString(),side,coin:k,amount,price:a.price});saveWallet();$('tradeMsg').textContent=`ڈیمو ${side==='BUY'?'خرید':'فروخت'} مکمل: ${fmt(amount)} ${k}، قیمت ${money(a.price)}۔`;renderWallet();renderHistory()}
+function trade(side){const k=$('coinSelect').value,amount=Number($('amount').value),a=assets[k];if(!Number.isFinite(amount)||amount<=0){$('tradeMsg').textContent='براہِ کرم درست مقدار لکھیں۔';return}const cost=amount*a.price;if(side==='BUY'){if(cost>cash){$('tradeMsg').textContent='ڈیمو USDT بیلنس کافی نہیں۔';return}cash-=cost;holdings[k]+=amount}else{if(amount>holdings[k]){$('tradeMsg').textContent='والیٹ میں اتنی مقدار موجود نہیں۔';return}holdings[k]-=amount;cash+=cost}trades.push({time:new Date().toLocaleTimeString(),side,coin:k,amount,price:a.price});$('tradeMsg').textContent=`ڈیمو ${side==='BUY'?'خرید':'فروخت'} مکمل: ${fmt(amount)} ${k}، قیمت ${money(a.price)}۔`;renderWallet();renderHistory()}
 $('buy').addEventListener('click',()=>trade('BUY'));$('sell').addEventListener('click',()=>trade('SELL'));$('coinSelect').addEventListener('change',drawChart);window.addEventListener('resize',drawChart);async function refresh(){await fetchLive();tickDemo();renderMarket();renderWallet();drawChart()}for(const a of Object.values(assets))a.history.push(a.price);renderMarket();renderWallet();renderHistory();drawChart();refresh();setInterval(refresh,10000);
 if ('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {})); }
-function saveWallet();{
-  localStorage.setItem('awan_cash',cash);
-  localStorage.setItem('awan_holdings',JSON.stringify(holdings));
-  localStorage.setItem('awan_trades',JSON.stringify(trades));
-}
-
-const savedCash=localStorage.getItem('awan_cash');
-const savedHoldings=localStorage.getItem('awan_holdings');
-const savedTrades=localStorage.getItem('awan_trades');
-
-if(savedCash!==null) cash=Number(savedCash);
-if(savedHoldings!==null) holdings=JSON.parse(savedHoldings);
-if(savedTrades!==null) trades=JSON.parse(savedTrades);</script></body></html>
+</script></body></html>
