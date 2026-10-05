@@ -37,4 +37,12 @@ const savedTrades=localStorage.getItem('awan_trades');
 if(savedCash!==null) cash=Number(savedCash);
 if(savedHoldings!==null) holdings=JSON.parse(savedHoldings);
 if(savedTrades!==null) trades=JSON.parse(savedTrades);
+
+for(const a of Object.values(assets))a.history.push(a.price);
+renderMarket();
+renderWallet();
+renderHistory();
+drawChart();
+refresh();
+setInterval(refresh,10000);
 </script></body></html>
