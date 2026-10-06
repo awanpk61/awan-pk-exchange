@@ -32,7 +32,7 @@ function saveWallet(){
 
 const savedCash=localStorage.getItem('awan_cash');
 const savedHoldings=localStorage.getItem('awan_holdings');
-const savedTrades=localStorage.getItem('awan_trades');const savedAvgBuyPrice=localStorage.getItem('awan_avgBuyPrice');
+const savedTrades=localStorage.getItem('awan_trades');const savedAvgBuyPrice=localStorage.getItem('awan_avgBuyPrice'); if(savedAvgBuyPrice!==null) avgBuyPrice=JSON.parse(savedAvgBuyPrice);
 
 if(savedCash!==null) cash=Number(savedCash);
 if(savedHoldings!==null) holdings=JSON.parse(savedHoldings);
