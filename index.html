@@ -27,6 +27,7 @@ function saveWallet(){
   localStorage.setItem('awan_cash',cash);
   localStorage.setItem('awan_holdings',JSON.stringify(holdings));
   localStorage.setItem('awan_trades',JSON.stringify(trades));
+  localStorage.setItem('awan_avgBuyPrice',JSON.stringify(avgBuyPrice));
 }
 
 const savedCash=localStorage.getItem('awan_cash');
