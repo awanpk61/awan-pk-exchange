@@ -37,6 +37,18 @@ const savedTrades=localStorage.getItem('awan_trades');const savedAvgBuyPrice=loc
 if(savedCash!==null) cash=Number(savedCash);
 if(savedHoldings!==null) holdings=JSON.parse(savedHoldings);
 if(savedTrades!==null) trades=JSON.parse(savedTrades);
+  Object.keys(assets).forEach(k=>{
+  if(avgBuyPrice[k]===0 && holdings[k]>0){
+    let totalQty=0,totalCost=0;
+    trades.forEach(t=>{
+      if(t.coin===k && t.side==='BUY'){
+        totalQty+=Number(t.amount);
+        totalCost+=Number(t.amount)*Number(t.price);
+      }
+    });
+    if(totalQty>0) avgBuyPrice[k]=totalCost/totalQty;
+  }
+});
 
 for(const a of Object.values(assets))a.history.push(a.price);
 renderMarket();
