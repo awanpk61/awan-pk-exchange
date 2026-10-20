@@ -37,9 +37,9 @@ function renderWallet(){
     total+=value;
 
     let pnl=(a.price-avgBuyPrice[k])*holdings[k];
-    let pnlPercent=avgBuyPrice[k]>0
-      ? (pnl/(avgBuyPrice[k]*holdings[k]))*100
-      : 0;
+let pnlPercent=(avgBuyPrice[k]>0 && holdings[k]>0)
+  ? (pnl/(avgBuyPrice[k]*holdings[k]))*100
+  : 0;
 
     return `<tr>
       <td>${k}</td>
