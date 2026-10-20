@@ -7,7 +7,16 @@
 <div class="notice"><b>اہم وضاحت:</b> BTC، ETH اور DOGE کی قیمتیں Binance کے عوامی مارکیٹ ڈیٹا سے حاصل کرنے کی کوشش کی جاتی ہے۔ XAUT اس ورژن میں ڈیمو قیمت دکھاتا ہے۔ اس ایپ میں حقیقی رقم یا اصل کرپٹو کی خرید و فروخت نہیں ہوتی۔</div>
 <section class="card"><h2>مارکیٹ</h2><div id="market" class="market"></div><div id="status" class="status">مارکیٹ ڈیٹا حاصل کیا جا رہا ہے…</div></section>
 <section class="card"><h2>قیمت کا چارٹ</h2><div class="muted" id="chartLabel" style="margin-bottom:8px">BTC/USDT</div><canvas id="chart" width="900" height="300"></canvas><div class="small" style="margin-top:8px">چارٹ اسی قیمت کی تاریخ دکھاتا ہے جو اس ایپ نے دیکھی ہے؛ یہ مکمل ایکسچینج چارٹ نہیں۔</div></section>
-<div class="grid2"><section class="card"><h2>ڈیمو خریدیں / فروخت کریں</h2><div style="display:grid;gap:10px"><label class="small">کوائن منتخب کریں<select id="coinSelect"><option value="BTC">BTC</option><option value="ETH">ETH</option><option value="DOGE">DOGE</option><option value="XAUT">XAUT</option></select></label><label class="small">مقدار<input id="amount" type="number" min="0.000001" step="any" value="0.001" inputmode="decimal"></label><div class="controls"><button id="buy">ڈیمو خریدیں</button><button id="sell" class="sell">ڈیمو فروخت کریں</button></div><div id="tradeMsg" class="small">یہ صرف مشق کے لیے ہے۔</div></div></section>
+<div class="grid2"><section class="card"><h2>ڈیمو خریدیں / فروخت کریں</h2><div style="display:grid;gap:10px"><label class="small">کوائن منتخب کریں<select id="coinSelect"><option value="BTC">BTC</option><option value="ETH">ETH</option><option value="DOGE">DOGE</option><option value="XAUT">XAUT</option></select></label><label class="small">مقدار<input id="amount" type="number" min="0.000001" step="any" value="0.001" inputmode="decimal"></label><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+  <div style="background:#17243a;padding:10px;border-radius:8px">
+    <div class="small">Current Price</div>
+    <div id="tradePrice" style="font-size:17px;font-weight:bold;margin-top:4px">—</div>
+  </div>
+  <div style="background:#17243a;padding:10px;border-radius:8px">
+    <div class="small">Available USDT</div>
+    <div id="tradeCash" style="font-size:17px;font-weight:bold;margin-top:4px">—</div>
+  </div>
+</div><div class="controls"><button id="buy">ڈیمو خریدیں</button><button id="sell" class="sell">ڈیمو فروخت کریں</button></div><div id="tradeMsg" class="small">یہ صرف مشق کے لیے ہے۔</div></div></section>
 <section class="card"><h2>ڈیمو والیٹ</h2>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
   <div style="background:#17243a;padding:12px;border-radius:10px">
