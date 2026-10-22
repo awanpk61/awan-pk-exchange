@@ -139,7 +139,12 @@ $('buy').addEventListener('click',()=>trade('BUY'));$('amount').addEventListener
   renderMarket();
   renderWallet();
   drawChart();
-}for(const a of Object.values(assets))a.history.push(a.price);
+}for(const a of Object.values(assets))a.history.push(a.price);const initialCoin=$('coinSelect').value;
+$('tradePrice').textContent=money(assets[initialCoin].price);
+$('tradeCash').textContent=money(cash);
+
+const initialAmount=Number($('amount').value)||0;
+$('tradeTotal').textContent=money(initialAmount*assets[initialCoin].price);
 if ('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {})); }
 function saveWallet(){
   localStorage.setItem('awan_cash',cash);
