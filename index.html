@@ -122,7 +122,7 @@ $('buy').addEventListener('click',()=>trade('BUY'));$('amount').addEventListener
   const k=$('coinSelect').value;
   const amount=Number($('amount').value)||0;
   $('tradeTotal').textContent=money(amount*assets[k].price);
-});$('sell').addEventListener('click',()=>trade('SELL'));$$('coinSelect').addEventListener('change',()=>{
+});$('sell').addEventListener('click',()=>trade('SELL'));$('coinSelect').addEventListener('change',()=>{
   drawChart();
   const k=$('coinSelect').value;
   const amount=Number($('amount').value)||0;
