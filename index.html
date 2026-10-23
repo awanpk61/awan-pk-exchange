@@ -185,7 +185,10 @@ function trade(side){
     coin:k,
     amount,
     price:a.price,
-    fee:fee
+    fee:fee,
+    realizedPnl:side==='SELL'
+      ? (a.price-avgBuyPrice[k])*amount-fee
+      : null
   });
 
   saveWallet();
