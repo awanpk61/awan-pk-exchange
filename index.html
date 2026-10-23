@@ -38,7 +38,15 @@
   <button onclick="resetWallet()" style="background:#20c997;margin-bottom:8px">YES — Reset</button>
   <button onclick="hideResetBox()" style="background:#6c757d">NO — Cancel</button>
 </div></section></div>
-<section class="card"><h2>ڈیمو ٹریڈز کی ہسٹری</h2><div class="scroll"><table><thead><tr><th>وقت</th><th>عمل</th><th>کوائن</th><th>مقدار</th><th>قیمت (USDT)</th></tr></thead><tbody id="history"></tbody></table></div></section><div class="small">اگر انٹرنیٹ/API دستیاب نہ ہو تو ایپ عارضی طور پر ڈیمو قیمت دکھا سکتی ہے۔ یہ سرمایہ کاری کا مشورہ یا حقیقی ٹریڈنگ پلیٹ فارم نہیں۔</div></main>
+<section class="card"><h2>ڈیمو ٹریڈز کی ہسٹری</h2><div class="scroll"><table><thead><tr>
+  <th>وقت</th>
+  <th>عمل</th>
+  <th>کوائن</th>
+  <th>مقدار</th>
+  <th>قیمت (USDT)</th>
+  <th>Fee</th>
+  <th>Realized PnL</th>
+</tr></thead><tbody id="history"></tbody></table></div></section><div class="small">اگر انٹرنیٹ/API دستیاب نہ ہو تو ایپ عارضی طور پر ڈیمو قیمت دکھا سکتی ہے۔ یہ سرمایہ کاری کا مشورہ یا حقیقی ٹریڈنگ پلیٹ فارم نہیں۔</div></main>
 <script>const assets={BTC:{symbol:'BTCUSDT',name:'Bitcoin',price:67000,change:0,high:0,low:0,volume:0,live:false,history:[]},ETH:{symbol:'ETHUSDT',name:'Ethereum',price:3500,change:0,high:0,low:0,volume:0,live:false,history:[]},DOGE:{symbol:'DOGEUSDT',name:'Dogecoin',price:.16,change:0,high:0,low:0,volume:0,live:false,history:[]},XAUT:{symbol:null,name:'Tether Gold (XAUT)',price:3300,change:0,high:0,low:0,volume:0,live:false,history:[]}};let cash=10000,holdings={BTC:0,ETH:0,DOGE:0,XAUT:0},trades=[];let avgBuyPrice={BTC:0,ETH:0,DOGE:0,XAUT:0};const $=id=>document.getElementById(id);const fmt=n=>Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:6});const money=n=>Number(n).toLocaleString('en-US',{style:'currency',currency:'USD',maximumFractionDigits:2});
 function renderMarket(){$('market').innerHTML=Object.entries(assets).map(([k,a])=>`<div class="coin"><div class="symbol">${k} <span class="muted" style="font-weight:normal">${a.live?'LIVE':'DEMO'}</span></div><div class="price">${money(a.price)}</div><div class="change ${a.change>=0?'good':'bad'}">${a.change>=0?'+':''}${a.change.toFixed(2)}%</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px"><div class="small">High<br><b>${a.high>0?money(a.high):'—'}</b></div><div class="small">Low<br><b>${a.low>0?money(a.low):'—'}</b></div></div><div class="small" style="margin-top:8px">Volume: ${a.volume>0?fmt(a.volume):'—'}</div><div class="small" style="margin-top:5px">${a.name}</div></div>`).join('')}
 function renderWallet(){
