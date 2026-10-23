@@ -151,6 +151,8 @@ function trade(side){
       return;
     }
 
+    const realizedPnl=(a.price-avgBuyPrice[k])*amount-fee;
+
     holdings[k]-=amount;
     cash+=cost-fee;
   }
