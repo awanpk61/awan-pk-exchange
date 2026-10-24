@@ -60,9 +60,10 @@ function renderWallet(){
     total+=value;
 
     let pnl=(a.price-avgBuyPrice[k])*holdings[k];
-let pnlPercent=(avgBuyPrice[k]>0 && holdings[k]>0)
-  ? (pnl/(avgBuyPrice[k]*holdings[k]))*100
-  : 0;
+
+    let pnlPercent=(avgBuyPrice[k]>0 && holdings[k]>0)
+      ? (pnl/(avgBuyPrice[k]*holdings[k]))*100
+      : 0;
 
     return `<tr>
       <td>${k}</td>
@@ -74,11 +75,18 @@ let pnlPercent=(avgBuyPrice[k]>0 && holdings[k]>0)
     </tr>`;
   }).join('');
 
+  let totalRealizedPnl=trades.reduce((sum,t)=>{
+    return sum+(t.side==='SELL' && t.realizedPnl!==undefined
+      ? Number(t.realizedPnl)
+      : 0);
+  },0);
+
   $('cashBalance').textContent=money(cash);
-  $('portfolioValue').textContent=money(total);$('cashBalance').textContent=money(cash);
-$('portfolioValue').textContent=money(total);
-$('tradePrice').textContent=money(assets[$('coinSelect').value].price);
-$('tradeCash').textContent=money(cash);
+  $('portfolioValue').textContent=money(total);
+  $('realizedPnlTotal').textContent=money(totalRealizedPnl);
+
+  $('tradePrice').textContent=money(assets[$('coinSelect').value].price);
+  $('tradeCash').textContent=money(cash);
 }
 function renderHistory(){
   $('history').innerHTML=
