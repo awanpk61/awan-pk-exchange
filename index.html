@@ -109,7 +109,28 @@ function renderWallet(){
   $('realizedPnlTotal').textContent=money(totalRealizedPnl);
 $('totalFeesPaid').textContent=money(
   trades.reduce((sum,t)=>sum+Number(t.fee||0),0)
-);
+);  const completedTrades=trades.filter(
+    t=>t.side==='SELL' && t.realizedPnl!==undefined
+  );
+
+  const winningTrades=completedTrades.filter(
+    t=>Number(t.realizedPnl)>0
+  ).length;
+
+  const losingTrades=completedTrades.filter(
+    t=>Number(t.realizedPnl)<0
+  ).length;
+
+  const totalTrades=trades.length;
+
+  const winRate=completedTrades.length>0
+    ? (winningTrades/completedTrades.length)*100
+    : 0;
+
+  $('totalTrades').textContent=totalTrades;
+  $('winningTrades').textContent=winningTrades;
+  $('losingTrades').textContent=losingTrades;
+  $('winRate').textContent=winRate.toFixed(2)+'%';
   $('tradePrice').textContent=money(assets[$('coinSelect').value].price);
   $('tradeCash').textContent=money(cash);
 }
