@@ -88,7 +88,9 @@ function renderWallet(){
   $('cashBalance').textContent=money(cash);
   $('portfolioValue').textContent=money(total);
   $('realizedPnlTotal').textContent=money(totalRealizedPnl);
-
+$('totalFeesPaid').textContent=money(
+  trades.reduce((sum,t)=>sum+Number(t.fee||0),0)
+);
   $('tradePrice').textContent=money(assets[$('coinSelect').value].price);
   $('tradeCash').textContent=money(cash);
 }
