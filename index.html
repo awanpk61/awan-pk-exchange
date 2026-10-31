@@ -110,7 +110,81 @@
   <th>Realized PnL</th>
 </tr></thead><tbody id="history"></tbody></table></div></section><div class="small">اگر انٹرنیٹ/API دستیاب نہ ہو تو ایپ عارضی طور پر ڈیمو قیمت دکھا سکتی ہے۔ یہ سرمایہ کاری کا مشورہ یا حقیقی ٹریڈنگ پلیٹ فارم نہیں۔</div></main>
 <script>const assets={BTC:{symbol:'BTCUSDT',name:'Bitcoin',price:67000,change:0,high:0,low:0,volume:0,live:false,history:[]},ETH:{symbol:'ETHUSDT',name:'Ethereum',price:3500,change:0,high:0,low:0,volume:0,live:false,history:[]},DOGE:{symbol:'DOGEUSDT',name:'Dogecoin',price:.16,change:0,high:0,low:0,volume:0,live:false,history:[]},XAUT:{symbol:null,name:'Tether Gold (XAUT)',price:3300,change:0,high:0,low:0,volume:0,live:false,history:[]}};let cash=10000,holdings={BTC:0,ETH:0,DOGE:0,XAUT:0},trades=[];let avgBuyPrice={BTC:0,ETH:0,DOGE:0,XAUT:0};const $=id=>document.getElementById(id);const fmt=n=>Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:6});const money=n=>Number(n).toLocaleString('en-US',{style:'currency',currency:'USD',maximumFractionDigits:2});
-function renderMarket(){$('market').innerHTML=Object.entries(assets).map(([k,a])=>`<div class="coin"><div class="symbol">${k} <span class="muted" style="font-weight:normal">${a.live?'LIVE':'DEMO'}</span></div><div class="price">${money(a.price)}</div><div class="change ${a.change>=0?'good':'bad'}">${a.change>=0?'+':''}${a.change.toFixed(2)}%</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px"><div class="small">High<br><b>${a.high>0?money(a.high):'—'}</b></div><div class="small">Low<br><b>${a.low>0?money(a.low):'—'}</b></div></div><div class="small" style="margin-top:8px">Volume: ${a.volume>0?fmt(a.volume):'—'}</div><div class="small" style="margin-top:5px">${a.name}</div></div>`).join('')}
+function exportWalletBackup(){
+  const backup={
+    format:'AWAN_PK_EXCHANGE_BACKUP',
+    version:1,
+    createdAt:new Date().toISOString(),
+    cash:cash,
+    holdings:holdings,
+    avgBuyPrice:avgBuyPrice,
+    trades:trades
+  };
+
+  const blob=new Blob(
+    [JSON.stringify(backup,null,2)],
+    {type:'application/json'}
+  );
+
+  const url=URL.createObjectURL(blob);
+  const link=document.createElement('a');
+
+  link.href=url;
+  link.download='awan-pk-wallet-backup.json';
+  link.click();
+
+  URL.revokeObjectURL(url);
+}
+
+async function importWallet(event){
+  const file=event.target.files[0];
+  if(!file) return;
+
+  try{
+    const backup=JSON.parse(await file.text());
+
+    if(
+      backup.format!=='AWAN_PK_EXCHANGE_BACKUP' ||
+      !Number.isFinite(backup.cash) ||
+      backup.cash<0 ||
+      !backup.holdings ||
+      !backup.avgBuyPrice ||
+      !Array.isArray(backup.trades)
+    ){
+      throw new Error('Invalid backup file');
+    }
+
+    for(const coin of Object.keys(assets)){
+      if(
+        !Number.isFinite(backup.holdings[coin]) ||
+        backup.holdings[coin]<0 ||
+        !Number.isFinite(backup.avgBuyPrice[coin]) ||
+        backup.avgBuyPrice[coin]<0
+      ){
+        throw new Error('Invalid wallet data');
+      }
+    }
+
+    if(!confirm('Import this backup? Your current wallet data will be replaced.')) return;
+
+    cash=backup.cash;
+    holdings={...backup.holdings};
+    avgBuyPrice={...backup.avgBuyPrice};
+    trades=backup.trades;
+
+    saveWallet();
+    renderWallet();
+    renderHistory();
+
+    alert('Wallet backup imported successfully!');
+
+  }catch(error){
+    alert('Invalid backup file. Your current wallet was not changed.');
+  }finally{
+    event.target.value='';
+  }
+}
+  function renderMarket(){$('market').innerHTML=Object.entries(assets).map(([k,a])=>`<div class="coin"><div class="symbol">${k} <span class="muted" style="font-weight:normal">${a.live?'LIVE':'DEMO'}</span></div><div class="price">${money(a.price)}</div><div class="change ${a.change>=0?'good':'bad'}">${a.change>=0?'+':''}${a.change.toFixed(2)}%</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px"><div class="small">High<br><b>${a.high>0?money(a.high):'—'}</b></div><div class="small">Low<br><b>${a.low>0?money(a.low):'—'}</b></div></div><div class="small" style="margin-top:8px">Volume: ${a.volume>0?fmt(a.volume):'—'}</div><div class="small" style="margin-top:5px">${a.name}</div></div>`).join('')}
 function renderWallet(){
   let total=cash;
 
