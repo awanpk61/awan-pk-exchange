@@ -128,6 +128,16 @@ function renderWallet(){
   $('cashBalance').textContent=money(cash);
   $('portfolioValue').textContent=money(total);
   $('realizedPnlTotal').textContent=money(totalRealizedPnl);
+  let totalUnrealizedPnl=0;
+
+Object.entries(assets).forEach(([k,a])=>{
+  totalUnrealizedPnl+=(a.price-avgBuyPrice[k])*holdings[k];
+});
+
+let overallGrossPnl=totalRealizedPnl+totalUnrealizedPnl;
+
+$('totalUnrealizedPnl').textContent=money(totalUnrealizedPnl);
+$('overallGrossPnl').textContent=money(overallGrossPnl);
   const coinPnl={BTC:0,ETH:0,DOGE:0,XAUT:0};
 
 trades.forEach(t=>{
