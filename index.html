@@ -84,7 +84,22 @@
   <div style="margin-bottom:10px">کیا آپ Demo Wallet کو 10,000 USDT پر reset کرنا چاہتے ہیں؟</div>
   <button onclick="resetWallet()" style="background:#20c997;margin-bottom:8px">YES — Reset</button>
   <button onclick="hideResetBox()" style="background:#6c757d">NO — Cancel</button>
-</div></section></div>
+</div><div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+  <button onclick="exportWalletBackup()" style="background:#20c997;flex:1">
+    📥 Export Wallet Backup
+  </button>
+  <button onclick="document.getElementById('walletImportFile').click()" style="background:#4169e1;flex:1">
+    📤 Import Wallet Backup
+  </button>
+</div>
+
+<input
+  type="file"
+  id="walletImportFile"
+  accept=".json,application/json"
+  style="display:none"
+  onchange="importWallet(event)"
+></section></div>
 <section class="card"><h2>ڈیمو ٹریڈز کی ہسٹری</h2><div class="scroll"><table><thead><tr>
   <th>وقت</th>
   <th>عمل</th>
