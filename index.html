@@ -115,6 +115,20 @@ function renderWallet(){
   $('cashBalance').textContent=money(cash);
   $('portfolioValue').textContent=money(total);
   $('realizedPnlTotal').textContent=money(totalRealizedPnl);
+  const coinPnl={BTC:0,ETH:0,DOGE:0,XAUT:0};
+
+trades.forEach(t=>{
+  if(t.side==='SELL' && t.realizedPnl!==undefined){
+    coinPnl[t.coin]+=Number(t.realizedPnl);
+  }
+});
+
+$('coinRealizedPnl').innerHTML=`
+  <div>BTC: ${money(coinPnl.BTC)}</div>
+  <div>ETH: ${money(coinPnl.ETH)}</div>
+  <div>DOGE: ${money(coinPnl.DOGE)}</div>
+  <div>XAUT: ${money(coinPnl.XAUT)}</div>
+`;
 $('totalFeesPaid').textContent=money(
   trades.reduce((sum,t)=>sum+Number(t.fee||0),0)
 );  const completedTrades=trades.filter(
