@@ -3,11 +3,45 @@
 <html lang="ur"><head><meta name="version" content="3.0"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#101a2b"><link rel="manifest" href="manifest.webmanifest?v=3.0"><link rel="icon" type="image/png" sizes="192x192" href="icon-192.png"><title>AWAN PK Exchange</title>
 <style>
 :root{--bg:#0b1220;--panel:#121c2e;--panel2:#17243a;--text:#eef4ff;--muted:#9fb0ca;--green:#20c997;--red:#ff6b6b;--line:#263650}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif}header{padding:18px 16px;background:#101a2b;border-bottom:1px solid var(--line)}h1{font-size:22px;margin:0 0 6px}.sub{font-size:13px;color:var(--muted)}main{max-width:900px;margin:auto;padding:14px;display:grid;gap:14px}.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:15px}h2{font-size:17px;margin:0 0 12px}.notice{font-size:13px;line-height:1.6;background:#172b38;border:1px solid #28566a;padding:10px;border-radius:10px;color:#d6f3ff}.status{font-size:12px;margin-top:8px;color:var(--muted)}.market{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:10px}.coin{background:var(--panel2);border-radius:10px;padding:12px}.symbol{font-weight:bold}.price{font-size:19px;margin:9px 0}.change{font-size:12px}.good{color:var(--green)}.bad{color:var(--red)}.muted{color:var(--muted)}select,input,button{font:inherit;border-radius:8px;border:1px solid var(--line);padding:10px;background:#0e1727;color:var(--text);width:100%}button{cursor:pointer;background:#2459a8;border:0;font-weight:bold}button.sell{background:#a63b4c}.controls{display:grid;grid-template-columns:1fr 1fr;gap:10px}canvas{width:100%;height:220px;display:block;background:#0e1727;border-radius:10px}table{width:100%;border-collapse:collapse;font-size:13px}td,th{text-align:left;padding:9px 5px;border-bottom:1px solid var(--line)}.scroll{overflow-x:auto}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:600px){.grid2{grid-template-columns:1fr}h1{font-size:20px}}.small{font-size:12px;line-height:1.5;color:var(--muted)}
-</style></head><body><header><h1>AWAN PK Exchange</h1><div class="sub">مارکیٹ قیمتیں لائیو چیک کرنے کا ڈیمو — خرید و فروخت فرضی ہے</div></header><main>
+.navbar{
+  position:sticky;
+  top:0;
+  z-index:100;
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  padding:10px 14px;
+  background:#101a2b;
+  border-bottom:1px solid var(--line);
+}
+.navbar a{
+  flex:0 0 auto;
+  color:var(--text);
+  text-decoration:none;
+  background:var(--panel2);
+  padding:9px 14px;
+  border-radius:8px;
+  font-size:13px;
+}
+.navbar a:hover{
+  background:#2459a8;
+}
+html{
+  scroll-behavior:smooth;
+  scroll-padding-top:65px;
+}</style></head><body><header><h1>AWAN PK Exchange</h1><div class="sub">مارکیٹ قیمتیں لائیو چیک کرنے کا ڈیمو — خرید و فروخت فرضی ہے</div></header>
+<nav class="navbar">
+  <a href="#dashboard">Dashboard</a>
+  <a href="#markets">Markets</a>
+  <a href="#trade">Trade</a>
+  <a href="#wallet">Wallet</a>
+  <a href="#history">History</a>
+</nav>
+<main id="dashboard">
 <div class="notice"><b>اہم وضاحت:</b> BTC، ETH اور DOGE کی قیمتیں Binance کے عوامی مارکیٹ ڈیٹا سے حاصل کرنے کی کوشش کی جاتی ہے۔ XAUT اس ورژن میں ڈیمو قیمت دکھاتا ہے۔ اس ایپ میں حقیقی رقم یا اصل کرپٹو کی خرید و فروخت نہیں ہوتی۔</div>
-<section class="card"><h2>مارکیٹ</h2><div id="market" class="market"></div><div id="status" class="status">مارکیٹ ڈیٹا حاصل کیا جا رہا ہے…</div></section>
+<section id="markets" class="card"><h2>مارکیٹ</h2><div id="market" class="market"></div><div id="status" class="status">مارکیٹ ڈیٹا حاصل کیا جا رہا ہے…</div></section>
 <section class="card"><h2>قیمت کا چارٹ</h2><div class="muted" id="chartLabel" style="margin-bottom:8px">BTC/USDT</div><canvas id="chart" width="900" height="300"></canvas><div class="small" style="margin-top:8px">چارٹ اسی قیمت کی تاریخ دکھاتا ہے جو اس ایپ نے دیکھی ہے؛ یہ مکمل ایکسچینج چارٹ نہیں۔</div></section>
-<div class="grid2"><section class="card"><h2>ڈیمو خریدیں / فروخت کریں</h2><div style="display:grid;gap:10px"><label class="small">کوائن منتخب کریں<select id="coinSelect"><option value="BTC">BTC</option><option value="ETH">ETH</option><option value="DOGE">DOGE</option><option value="XAUT">XAUT</option></select></label><label class="small">مقدار<input id="amount" type="number" min="0.000001" step="any" value="0.001" inputmode="decimal"></label><div style="background:#17243a;padding:10px;border-radius:8px">
+<div class="grid2"><section id="trade" class="card"><h2>ڈیمو خریدیں / فروخت کریں</h2><div style="display:grid;gap:10px"><label class="small">کوائن منتخب کریں<select id="coinSelect"><option value="BTC">BTC</option><option value="ETH">ETH</option><option value="DOGE">DOGE</option><option value="XAUT">XAUT</option></select></label><label class="small">مقدار<input id="amount" type="number" min="0.000001" step="any" value="0.001" inputmode="decimal"></label><div style="background:#17243a;padding:10px;border-radius:8px">
   <div class="small">Total Value</div>
   <div id="tradeTotal" style="font-size:17px;font-weight:bold;margin-top:4px">$0.00</div>
 </div><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
@@ -20,7 +54,7 @@
     <div id="tradeCash" style="font-size:17px;font-weight:bold;margin-top:4px">—</div>
   </div>
 </div><div class="controls"><button id="buy">ڈیمو خریدیں</button><button id="sell" class="sell">ڈیمو فروخت کریں</button></div><div id="tradeMsg" class="small">یہ صرف مشق کے لیے ہے۔</div></div></section>
-<section class="card"><h2>ڈیمو والیٹ</h2>
+<section id="wallet" class="card"><h2>ڈیمو والیٹ</h2>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
   <div style="background:#17243a;padding:12px;border-radius:10px">
     <div class="small">Available USDT</div>
@@ -100,7 +134,7 @@
   style="display:none"
   onchange="importWallet(event)"
 ></section></div>
-<section class="card"><h2>ڈیمو ٹریڈز کی ہسٹری</h2><div class="scroll"><table><thead><tr>
+<section id="history" class="card"><h2>ڈیمو ٹریڈز کی ہسٹری</h2><div class="scroll"><table><thead><tr>
   <th>وقت</th>
   <th>عمل</th>
   <th>کوائن</th>
