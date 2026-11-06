@@ -271,6 +271,9 @@ function renderWallet(){
 
   $('cashBalance').textContent=money(cash);
   $('portfolioValue').textContent=money(total);
+  $('dashPortfolioValue').textContent=money(total);
+$('dashCashBalance').textContent=money(cash);
+$('dashTotalTrades').textContent=trades.length;
   $('realizedPnlTotal').textContent=money(totalRealizedPnl);
   let totalUnrealizedPnl=0;
 
