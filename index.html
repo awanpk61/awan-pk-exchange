@@ -282,6 +282,7 @@ let overallGrossPnl=totalRealizedPnl+totalUnrealizedPnl;
 
 $('totalUnrealizedPnl').textContent=money(totalUnrealizedPnl);
 $('overallGrossPnl').textContent=money(overallGrossPnl);
+  $('dashOverallPnl').textContent=money(overallGrossPnl);
   const coinPnl={BTC:0,ETH:0,DOGE:0,XAUT:0};
 
 trades.forEach(t=>{
